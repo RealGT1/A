@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <pre>
+import java.util.*;
+
+public class DijkstrasClass {
+    final static int MAX = 20;
+    final static int infinity = 9999;
+    static int n; // No. of vertices of G
+    static int a[][]; // Cost matrix
+    static Scanner scan = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        ReadMatrix();
+        int s = 0;
+        System.out.println("Enter starting vertex: ");
+        s = scan.nextInt();
+        Dijkstras(s); // find shortest path
+    }
+
+    static void ReadMatrix() {
+        a = new int[MAX][MAX];
+        System.out.println("Enter the number of vertices:");
+        n = scan.nextInt();
+        System.out.println("Enter the cost adjacency matrix:");
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                a[i][j] = scan.nextInt();
+            }
+        }
+    }
+
+    static void Dijkstras(int s) {
+        int S[] = new int[MAX];
+        int d[] = new int[MAX];
+        int u, v;
+        int i;
+        for (i = 1; i <= n; i++) {
+            S[i] = 0;
+            d[i] = a[s][i];
+        }
+        S[s] = 1;
+        d[s] = 1;
+        i = 2;
+        while (i <= n) {
+            u = Extract_Min(S, d);
+            S[u] = 1;
+            i++;
+            for (v = 1; v <= n; v++) {
+                if (((d[u] + a[u][v] < d[v]) && (S[v] == 0))) {
+                    d[v] = d[u] + a[u][v];
+                }
+            }
+        }
+        for (i = 1; i <= n; i++) {
+            if (i != s) {
+                System.out.println(i + ":" + d[i]);
+            }
+        }
+    }
+
+    static int Extract_Min(int S[], int d[]) {
+        int i, j = 1, min;
+        min = infinity;
+        for (i = 1; i <= n; i++) {
+            if ((d[i] < min) && (S[i] == 0)) {
+                min = d[i];
+                j = i;
+            }
+        }
+        return (j);
+    }
+}
+        </pre>
+    </div>
+
+    <div>
+        <pre>
+        Enter the number of vertices:
+        6
+
+        Enter the cost adjacency matrix:
+        0 15 10 9999 45 9999
+        9999 0 15 9999 20 9999
+        20 9999 0 20 9999 9999
+        9999 10 9999 0 35 9999
+        9999 9999 9999 30 0 9999
+        9999 9999 9999 4 9999 0
+
+        Enter starting vertex: 6
+        1:49
+        2:14
+        3:29
+        4:4
+        5:34
+        --------------------------------------
+        Enter the number of vertices:
+        4
+
+        Enter the cost adjacency matrix:
+        0 3 1 9999
+        3 0 9999 2
+        1 9999 0 4
+        9999 2 4 0
+
+        Enter starting vertex: 1
+        2:3
+        3:1
+        4:5
+    </div>
+</pre>
+
+        <img src="./Screenshot 2023-07-13 001418.png">
+
+        <div>
+            <pre>
+------------------------------------------------------
+
+import java.util.Scanner;
+
+public class PrimsClass {
+    final static int MAX = 20;
+    static int n; // No. of vertices of G
+    static int cost[][]; // Cost matrix
+    static Scanner scan = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        ReadMatrix();
+        Prims();
+    }
+
+    static void ReadMatrix() {
+        int i, j;
+        cost = new int[MAX][MAX];
+        System.out.println("Enter the number of nodes:");
+        n = scan.nextInt();
+        System.out.println("Enter the adjacency matrix:");
+        for (i = 1; i <= n; i++) {
+            for (j = 1; j <= n; j++) {
+                cost[i][j] = scan.nextInt();
+                if (cost[i][j] == 0)
+                    cost[i][j] = 999;
+            }
+        }
+    }
+
+    static void Prims() {
+        int visited[] = new int[10];
+        int ne = 1, i, j, min, a = 0, b = 0, u = 0, v = 0;
+        int mincost = 0;
+
+        visited[1] = 1;
+        while (ne < n) {
+            for (i = 1, min = 999; i <= n; i++) {
+                for (j = 1; j <= n; j++) {
+                    if (cost[i][j] < min) {
+                        if (visited[i] != 0) {
+                            min = cost[i][j];
+                            a = u = i;
+                            b = v = j;
+                        }
+                    }
+                }
+            }
+            if (visited[u] == 0 || visited[v] == 0) {
+                System.out.println("Edge " + ne + ": (" + a + "," + b + ") cost: " + min);
+                mincost += min;
+                visited[b] = 1;
+            }
+            cost[a][b] = cost[b][a] = 999;
+            ne++;
+        }
+
+        System.out.println("\nMinimum cost: " + mincost);
+    }
+}
+-------------------------------------------------------------------
+
+</pre>
+        </div>
+
+        <div>
+            <pre>
+            Enter the number of nodes:
+            6
+
+            Enter the adjacency matrix:
+            0 60 10 999 999 999
+            60 0 999 20 40 70
+            10 999 0 999 999 50
+            999 20 999 0 999 80
+            999 40 999 999 0 30
+            999 70 50 80 30 0
+
+            Edge 1: (1,3) cost:10
+            Edge 2: (3,6) cost:50
+            Edge 3: (6,5) cost:30
+            Edge 4: (5,2) cost:40
+            Edge 5: (2,4) cost:20
+
+            Minimum cost 150
+        </pre>
+
+            <img src="./Screenshot 2023-07-13 003459.png">
+        </div>
+
+
+        <div>
+            <pre>
+            --------------------------------
+            Enter the number of nodes:
+            4
+
+            Enter the adjacency matrix:
+            0 1 3 0
+            1 0 2 4
+            3 2 0 5
+            0 4 5 0
+
+            Edge 1: (1, 2) cost: 1
+            Edge 2: (2, 3) cost: 2
+
+            Minimum cost: 3
+        </pre>
+        </div>
+
+
+
+
+
+</body>
+
+</html>
